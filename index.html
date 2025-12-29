@@ -3,184 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramazan 2026</title>
+    <title>Ramazan 2026 - Geri Sayım ve Zikirmatik</title>
     <style>
+        :root {
+            --gold: #fdbb2d;
+            --dark-bg: #0b131e;
+        }
+
         body {
-            margin: 0; padding: 0; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: #0b131e url('https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-            background-size: cover; font-family: 'Segoe UI', Arial, sans-serif; color: white;
-            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://images.unsplash.com/photo-1542668595-bb5d9f290dd5?q=80&w=2070') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            align-items: stretch;
+            padding: 20px;
+            max-width: 1200px;
+        }
+
+        /* Ana Kart Tasarımı */
         .main-card {
-            background: rgba(0, 0, 0, 0.85);
-            padding: 25px; border-radius: 25px;
-            width: 85%; max-width: 380px; /* Ekrandan taşmaması için biraz daralttım */
-            border: 2px solid #fdbb2d;
-            text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            box-sizing: border-box; /* Padding'in genişliği etkilememesi için */
+            background: rgba(11, 19, 30, 0.9);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(253, 187, 45, 0.3);
         }
 
-        .welcome-container { margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        #welcome-msg { color: #fdbb2d; font-size: 1.3rem; font-weight: bold; }
-        .edit-name { cursor: pointer; font-size: 1.1rem; opacity: 0.7; transition: 0.3s; }
-        .edit-name:hover { opacity: 1; transform: scale(1.2); }
-
-        .input-area { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #fdbb2d; background: rgba(0,0,0,0.5); color: white; outline: none; width: 100%; box-sizing: border-box; }
-
-        .quote-section {
-            background: rgba(253, 187, 45, 0.1);
-            padding: 15px; border-radius: 15px; margin-bottom: 20px;
-            border-left: 5px solid #fdbb2d; font-style: italic; min-height: 60px;
-            display: flex; align-items: center; justify-content: center; transition: 0.5s;
-            font-size: 0.95rem;
-        }
-
-        .timer-grid { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 5px; }
-        .time-item { background: rgba(255,255,255,0.05); padding: 10px 5px; border-radius: 12px; flex: 1; border-bottom: 3px solid #fdbb2d; }
-        .val { display: block; font-size: 1.5rem; font-weight: bold; }
-        .unit { font-size: 0.6rem; color: #fdbb2d; font-weight: bold; }
-
-        /* BUTONLARIN ORTAK STİLİ */
-        .action-btn { 
-            background: transparent; 
-            color: #fdbb2d; 
-            border: 2px solid #fdbb2d; 
-            padding: 14px 10px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            width: 100%; 
-            margin-bottom: 12px;
-            transition: all 0.3s ease; 
-            display: block; 
-            text-decoration: none; 
+        .quote {
+            font-style: italic;
+            border-left: 3px solid var(--gold);
+            padding: 10px;
+            margin-bottom: 20px;
             font-size: 0.9rem;
-            box-sizing: border-box;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        /* Üstüne gelince (Hover) ikisi de sarı olacak */
-        .action-btn:hover { 
-            background: #fdbb2d; 
-            color: black; 
-            transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(253,187,45,0.4); 
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
         }
 
-        .action-btn:active { transform: scale(0.98); }
-        
-        #yt-player { position: absolute; top: -999px; visibility: hidden; }
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        /* Butonlar */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: black;
+        }
+
+        /* Zikirmatik Tasarımı */
+        .zikirmatik-card {
+            background: rgba(11, 19, 30, 0.9);
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .zikir-circle {
+            width: 150px;
+            height: 150px;
+            border: 5px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.1s;
+            box-shadow: 0 0 15px var(--gold);
+            user-select: none;
+        }
+
+        .zikir-circle:active {
+            transform: scale(0.95);
+            background: rgba(253, 187, 45, 0.2);
+        }
+
+        .count-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .zikir-text {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .reset-btn {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #aaa;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; align-items: center; }
+            .main-card, .zikirmatik-card { width: 90%; }
+        }
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
 
-<div class="main-card">
-    <div id="name-input-box" class="input-area">
-        <input type="text" id="nameInp" placeholder="Adınızı girin...">
-        <button onclick="setName()" style="background:#fdbb2d; border:none; border-radius:10px; padding:0 15px; cursor:pointer; font-weight:bold;">OK</button>
+    <div class="container">
+        <div class="main-card">
+            <div class="quote">"Oruç sabrın yarısıdır."</div>
+            <h3>RAMAZAN 2026 GERİ SAYIM</h3>
+            
+            <div class="countdown">
+                <div class="time-box"><span id="days">00</span>GÜN</div>
+                <div class="time-box"><span id="hours">00</span>SAAT</div>
+                <div class="time-box"><span id="mins">00</span>DAK</div>
+                <div class="time-box"><span id="secs">00</span>SN</div>
+            </div>
+
+            <button class="btn" onclick="shareSite()">🔗 SİTEYİ PAYLAŞ</button>
+            <button class="btn">🎵 MÜZİĞİ BAŞLAT</button>
+            <button class="btn">🕌 İMSAKİYE VAKİTLERİ</button>
+        </div>
+
+        <div class="zikirmatik-card">
+            <h4 style="color: var(--gold); margin-bottom: 20px;">ZİKİRMATİK</h4>
+            <div class="zikir-circle" onclick="countUp()">
+                <div class="count-display" id="zikir-count">0</div>
+                <div class="zikir-text">SUBHANALLAH</div>
+            </div>
+            <div class="reset-btn" onclick="resetCounter()">Sayıyı Sıfırla</div>
+        </div>
     </div>
 
-    <div class="welcome-container" id="welcome-container" style="display:none;">
-        <span id="welcome-msg"></span>
-        <span class="edit-name" onclick="resetName()" title="İsmi Değiştir">✏️</span>
-    </div>
+    <script>
+        // Zikirmatik Sistemi
+        let count = localStorage.getItem('zikirCount') || 0;
+        document.getElementById('zikir-count').innerText = count;
 
-    <div class="quote-section" id="quote-box">Yükleniyor...</div>
-
-    <h2 style="font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 20px; opacity: 0.8;">RAMAZAN 2026 GERİ SAYIM</h2>
-
-    <div class="timer-grid">
-        <div class="time-item"><span id="days" class="val">00</span><span class="unit">GÜN</span></div>
-        <div class="time-item"><span id="hours" class="val">00</span><span class="unit">SAAT</span></div>
-        <div class="time-item"><span id="mins" class="val">00</span><span class="unit">DAK</span></div>
-        <div class="time-item"><span id="secs" class="val">00</span><span class="unit">SN</span></div>
-    </div>
-
-    <a href="https://namazvakitleri.diyanet.gov.tr/" target="_blank" class="action-btn">
-        🕌 İMSAKİYE VAKİTLERİ
-    </a>
-
-    <button class="action-btn" id="mBtn" onclick="togglePlay()">
-        🎵 MÜZİĞİ BAŞLAT
-    </button>
-
-    <div id="yt-player"></div>
-</div>
-
-<script>
-    function setName() {
-        const name = document.getElementById('nameInp').value;
-        if(name) { localStorage.setItem('user_name', name); checkName(); }
-    }
-    function checkName() {
-        const n = localStorage.getItem('user_name');
-        if(n) {
-            document.getElementById('welcome-msg').innerText = "Hoş Geldin, " + n + "!";
-            document.getElementById('welcome-container').style.display = 'flex';
-            document.getElementById('name-input-box').style.display = 'none';
-        } else {
-            document.getElementById('welcome-container').style.display = 'none';
-            document.getElementById('name-input-box').style.display = 'flex';
+        function countUp() {
+            count++;
+            document.getElementById('zikir-count').innerText = count;
+            localStorage.setItem('zikirCount', count);
         }
-    }
-    function resetName() {
-        localStorage.removeItem('user_name');
-        document.getElementById('nameInp').value = "";
-        checkName();
-    }
-    checkName();
 
-    const sler = [
-        "Oruç tutun ki sıhhat bulasınız.",
-        "Oruç sabrın yarısıdır.",
-        "Ramazan bereket ve mağfiret ayıdır.",
-        "Oruçlunun duası reddedilmez.",
-        "Cennetin Reyyan kapısı sadece oruçlular içindir."
-    ];
-    let sIdx = 0;
-    function rotateS() {
-        const qBox = document.getElementById('quote-box');
-        qBox.style.opacity = 0;
-        setTimeout(() => {
-            qBox.innerText = sler[sIdx];
-            qBox.style.opacity = 1;
-            sIdx = (sIdx + 1) % sler.length;
-        }, 500);
-    }
-    setInterval(rotateS, 7000);
-    rotateS();
-
-    const ramazan = new Date("Feb 18, 2026 00:00:00").getTime();
-    function updateTimer() {
-        const diff = ramazan - new Date().getTime();
-        if (diff > 0) {
-            document.getElementById('days').innerText = Math.floor(diff / 86400000);
-            document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
+        function resetCounter() {
+            if(confirm("Sıfırlamak istediğine emin misin?")) {
+                count = 0;
+                document.getElementById('zikir-count').innerText = count;
+                localStorage.setItem('zikirCount', count);
+            }
         }
-    }
-    setInterval(updateTimer, 1000);
-    updateTimer();
 
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('yt-player', { height: '1', width: '1', videoId: 'zqI_G4olz4s' });
-    }
-    let p = false;
-    function togglePlay() {
-        if(!p) { player.playVideo(); document.getElementById('mBtn').innerText = "🔇 DURDUR"; }
-        else { player.pauseVideo(); document.getElementById('mBtn').innerText = "🎵 MÜZİĞİ BAŞLAT"; }
-        p = !p;
-    }
-</script>
+        // Paylaşma Sistemi
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Ramazan 2026',
+                    text: 'Hayırlı Ramazanlar! Geri sayım başladı.',
+                    url: window.location.href
+                });
+            } else {
+                alert("Link kopyalandı: " + window.location.href);
+            }
+        }
+
+        // Geri Sayım Sistemi (Temsili Tarih: 1 Mart 2026)
+        const targetDate = new Date("March 1, 2026 00:00:00").getTime();
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }, 1000);
+    </script>
 </body>
 </html>
