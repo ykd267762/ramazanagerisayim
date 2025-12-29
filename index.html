@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramazan 2026</title>
+    <style>
+        body {
+            margin: 0; padding: 0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: #0b131e url('https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+            background-size: cover; font-family: 'Segoe UI', Arial, sans-serif; color: white;
+            overflow-x: hidden;
+        }
+
+        .main-card {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 25px; border-radius: 25px;
+            width: 85%; max-width: 380px; /* Ekrandan taşmaması için biraz daralttım */
+            border: 2px solid #fdbb2d;
+            text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            box-sizing: border-box; /* Padding'in genişliği etkilememesi için */
+        }
+
+        .welcome-container { margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        #welcome-msg { color: #fdbb2d; font-size: 1.3rem; font-weight: bold; }
+        .edit-name { cursor: pointer; font-size: 1.1rem; opacity: 0.7; transition: 0.3s; }
+        .edit-name:hover { opacity: 1; transform: scale(1.2); }
+
+        .input-area { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #fdbb2d; background: rgba(0,0,0,0.5); color: white; outline: none; width: 100%; box-sizing: border-box; }
+
+        .quote-section {
+            background: rgba(253, 187, 45, 0.1);
+            padding: 15px; border-radius: 15px; margin-bottom: 20px;
+            border-left: 5px solid #fdbb2d; font-style: italic; min-height: 60px;
+            display: flex; align-items: center; justify-content: center; transition: 0.5s;
+            font-size: 0.95rem;
+        }
+
+        .timer-grid { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 5px; }
+        .time-item { background: rgba(255,255,255,0.05); padding: 10px 5px; border-radius: 12px; flex: 1; border-bottom: 3px solid #fdbb2d; }
+        .val { display: block; font-size: 1.5rem; font-weight: bold; }
+        .unit { font-size: 0.6rem; color: #fdbb2d; font-weight: bold; }
+
+        /* BUTONLARIN ORTAK STİLİ */
+        .action-btn { 
+            background: transparent; 
+            color: #fdbb2d; 
+            border: 2px solid #fdbb2d; 
+            padding: 14px 10px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-bottom: 12px;
+            transition: all 0.3s ease; 
+            display: block; 
+            text-decoration: none; 
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Üstüne gelince (Hover) ikisi de sarı olacak */
+        .action-btn:hover { 
+            background: #fdbb2d; 
+            color: black; 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(253,187,45,0.4); 
+        }
+
+        .action-btn:active { transform: scale(0.98); }
+        
+        #yt-player { position: absolute; top: -999px; visibility: hidden; }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <div id="name-input-box" class="input-area">
+        <input type="text" id="nameInp" placeholder="Adınızı girin...">
+        <button onclick="setName()" style="background:#fdbb2d; border:none; border-radius:10px; padding:0 15px; cursor:pointer; font-weight:bold;">OK</button>
+    </div>
+
+    <div class="welcome-container" id="welcome-container" style="display:none;">
+        <span id="welcome-msg"></span>
+        <span class="edit-name" onclick="resetName()" title="İsmi Değiştir">✏️</span>
+    </div>
+
+    <div class="quote-section" id="quote-box">Yükleniyor...</div>
+
+    <h2 style="font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 20px; opacity: 0.8;">RAMAZAN 2026 GERİ SAYIM</h2>
+
+    <div class="timer-grid">
+        <div class="time-item"><span id="days" class="val">00</span><span class="unit">GÜN</span></div>
+        <div class="time-item"><span id="hours" class="val">00</span><span class="unit">SAAT</span></div>
+        <div class="time-item"><span id="mins" class="val">00</span><span class="unit">DAK</span></div>
+        <div class="time-item"><span id="secs" class="val">00</span><span class="unit">SN</span></div>
+    </div>
+
+    <a href="https://namazvakitleri.diyanet.gov.tr/" target="_blank" class="action-btn">
+        🕌 İMSAKİYE VAKİTLERİ
+    </a>
+
+    <button class="action-btn" id="mBtn" onclick="togglePlay()">
+        🎵 MÜZİĞİ BAŞLAT
+    </button>
+
+    <div id="yt-player"></div>
+</div>
+
+<script>
+    function setName() {
+        const name = document.getElementById('nameInp').value;
+        if(name) { localStorage.setItem('user_name', name); checkName(); }
+    }
+    function checkName() {
+        const n = localStorage.getItem('user_name');
+        if(n) {
+            document.getElementById('welcome-msg').innerText = "Hoş Geldin, " + n + "!";
+            document.getElementById('welcome-container').style.display = 'flex';
+            document.getElementById('name-input-box').style.display = 'none';
+        } else {
+            document.getElementById('welcome-container').style.display = 'none';
+            document.getElementById('name-input-box').style.display = 'flex';
+        }
+    }
+    function resetName() {
+        localStorage.removeItem('user_name');
+        document.getElementById('nameInp').value = "";
+        checkName();
+    }
+    checkName();
+
+    const sler = [
+        "Oruç tutun ki sıhhat bulasınız.",
+        "Oruç sabrın yarısıdır.",
+        "Ramazan bereket ve mağfiret ayıdır.",
+        "Oruçlunun duası reddedilmez.",
+        "Cennetin Reyyan kapısı sadece oruçlular içindir."
+    ];
+    let sIdx = 0;
+    function rotateS() {
+        const qBox = document.getElementById('quote-box');
+        qBox.style.opacity = 0;
+        setTimeout(() => {
+            qBox.innerText = sler[sIdx];
+            qBox.style.opacity = 1;
+            sIdx = (sIdx + 1) % sler.length;
+        }, 500);
+    }
+    setInterval(rotateS, 7000);
+    rotateS();
+
+    const ramazan = new Date("Feb 18, 2026 00:00:00").getTime();
+    function updateTimer() {
+        const diff = ramazan - new Date().getTime();
+        if (diff > 0) {
+            document.getElementById('days').innerText = Math.floor(diff / 86400000);
+            document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
+            document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
+            document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
+        }
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('yt-player', { height: '1', width: '1', videoId: 'zqI_G4olz4s' });
+    }
+    let p = false;
+    function togglePlay() {
+        if(!p) { player.playVideo(); document.getElementById('mBtn').innerText = "🔇 DURDUR"; }
+        else { player.pauseVideo(); document.getElementById('mBtn').innerText = "🎵 MÜZİĞİ BAŞLAT"; }
+        p = !p;
+    }
+</script>
+</body>
+</html>
