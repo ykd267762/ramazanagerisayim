@@ -3,85 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramazan 2026 - Geri Sayım ve Zikirmatik</title>
+    <title>Ramazan 2026 Geri Sayım</title>
     <style>
-        :root {
-            --gold: #fdbb2d;
-            --dark-bg: #0b131e;
-        }
-
+        :root { --gold: #fdbb2d; }
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('https://images.unsplash.com/photo-1542668595-bb5d9f290dd5?q=80&w=2000') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif;
+            background: url('https://images.unsplash.com/photo-1542668595-bb5d9f290dd5?auto=format&fit=crop&q=80&w=2000') no-repeat center center fixed;
+            background-size: cover; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh;
         }
-
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); z-index: 1;
-        }
-
-        .container {
-            position: relative; z-index: 2; display: flex; flex-wrap: wrap;
-            gap: 20px; justify-content: center; align-items: center; padding: 20px; width: 100%;
-        }
-
-        .card {
-            background: rgba(11, 19, 30, 0.95); border: 2px solid var(--gold);
-            border-radius: 20px; padding: 25px; text-align: center;
-            box-shadow: 0 0 30px rgba(253, 187, 45, 0.2);
-        }
-
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); z-index: 1; }
+        .container { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: stretch; padding: 20px; width: 100%; max-width: 900px; }
+        .card { background: rgba(11, 19, 30, 0.95); border: 2px solid var(--gold); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 0 0 30px rgba(253, 187, 45, 0.2); }
         .main-card { width: 350px; }
         .zikir-card { width: 280px; }
-
-        /* Sözler Alanı */
-        .quote-box {
-            font-style: italic; border-left: 3px solid var(--gold);
-            padding: 15px; margin-bottom: 20px; font-size: 0.95rem;
-            background: rgba(255, 255, 255, 0.05); min-height: 80px;
-            display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-
-        .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+        .quote-box { font-style: italic; border-left: 3px solid var(--gold); padding: 15px; margin-bottom: 15px; font-size: 0.9rem; background: rgba(255, 255, 255, 0.05); min-height: 80px; display: flex; align-items: center; justify-content: center; transition: opacity 0.5s; }
+        .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 15px 0; }
         .time-box { background: rgba(253, 187, 45, 0.1); padding: 10px; border-radius: 10px; border: 1px solid rgba(253, 187, 45, 0.3); }
-        .time-box span { display: block; font-size: 1.4rem; font-weight: bold; color: var(--gold); }
-
-        .btn {
-            display: block; width: 100%; padding: 12px; margin: 10px 0;
-            border: 2px solid var(--gold); background: transparent; color: white;
-            border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s;
-            text-decoration: none; font-size: 0.9rem;
-        }
+        .time-box span { display: block; font-size: 1.2rem; font-weight: bold; color: var(--gold); }
+        .btn { display: block; width: 100%; padding: 10px; margin: 8px 0; border: 2px solid var(--gold); background: transparent; color: white; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; text-decoration: none; font-size: 0.85rem; }
         .btn:hover { background: var(--gold); color: black; }
-
-        .zikir-circle {
-            width: 150px; height: 150px; border: 5px solid var(--gold);
-            border-radius: 50%; margin: 20px auto; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.1s;
-        }
-        .zikir-circle:active { transform: scale(0.95); }
-        .count-display { font-size: 3rem; font-weight: bold; color: var(--gold); }
-
-        @media (max-width: 600px) { .container { flex-direction: column; } .main-card, .zikir-card { width: 95%; } }
+        .zikir-circle { width: 130px; height: 130px; border: 5px solid var(--gold); border-radius: 50%; margin: 15px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 15px var(--gold); }
+        .count-display { font-size: 2.5rem; font-weight: bold; color: var(--gold); }
+        @media (max-width: 768px) { .container { flex-direction: column; align-items: center; } .main-card, .zikir-card { width: 95%; } }
     </style>
 </head>
 <body>
     <div class="overlay"></div>
-
     <div class="container">
         <div class="card main-card">
-            <div class="quote-box" id="quoteText">"Ramazan berekettir."</div>
-            <h3 style="color: var(--gold); margin: 0;">RAMAZAN 2026</h3>
+            <div class="quote-box" id="quoteText">"Niyet kalbin kıblesidir..."</div>
+            <h3 style="color: var(--gold); margin: 0; font-size: 1.1rem; letter-spacing: 1px;">RAMAZAN'A KALAN SÜRE</h3>
             <div class="countdown">
                 <div class="time-box"><span id="days">00</span>GÜN</div>
                 <div class="time-box"><span id="hours">00</span>SAAT</div>
@@ -89,75 +40,62 @@
                 <div class="time-box"><span id="secs">00</span>SN</div>
             </div>
             <button class="btn" onclick="shareSite()">🔗 SİTEYİ PAYLAŞ</button>
-            <button class="btn" onclick="toggleMusic()" id="musicBtn">🎵 MÜZİĞİ BAŞLAT</button>
+            <button class="btn" onclick="toggleMusic()" id="musicBtn">🎵 ABDÜLKADİR REMİX BAŞLAT</button>
             <a href="https://namazvakitleri.diyanet.gov.tr/" target="_blank" class="btn">🕌 İMSAKİYE VAKİTLERİ</a>
         </div>
-
         <div class="card zikir-card">
             <h4 style="margin: 0; color: var(--gold);">ZİKİRMATİK</h4>
             <div class="zikir-circle" onclick="countUp()">
                 <div class="count-display" id="zikir-count">0</div>
-                <small>TIKLA</small>
+                <small style="color:var(--gold)">TIKLA</small>
             </div>
-            <div style="color: #888; cursor: pointer; font-size: 0.8rem;" onclick="resetCounter()">Sıfırla</div>
+            <div style="color: #888; cursor: pointer; font-size: 0.75rem; text-decoration: underline;" onclick="resetCounter()">Sıfırla</div>
         </div>
     </div>
 
     <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // SÖZLER SİSTEMİ (7 Saniyede Bir Değişir)
         const quotes = [
             "Oruç sabrın yarısıdır. (Hadis-i Şerif)",
-            "Ramazan ayı, Kur’an’ın indirildiği aydır.",
+            "Ramazan berekettir, paylaşmaktır.",
+            "Ey iman edenler! Allah'ı çokça zikredin. (Ahzab 41)",
             "Niyet kalbin kıblesidir. Orucunuz mübarek olsun.",
-            "Gülümsemek sadakadır, iftar paylaşmaktır.",
-            "Ramazan; ruhun temizliği, kalbin huzurudur.",
-            "Ey iman edenler! Allah'ı çokça zikredin. (Ahzab 41)"
+            "Ramazan; ruhun temizliği, kalbin huzurudur."
         ];
-        let quoteIndex = 0;
-        function updateQuote() {
-            const quoteEl = document.getElementById('quoteText');
-            quoteEl.style.opacity = 0;
+        let qIdx = 0;
+        function cycleQuotes() {
+            const qEl = document.getElementById('quoteText');
+            qEl.style.opacity = 0;
             setTimeout(() => {
-                quoteEl.innerText = quotes[quoteIndex];
-                quoteEl.style.opacity = 1;
-                quoteIndex = (quoteIndex + 1) % quotes.length;
+                qEl.innerText = quotes[qIdx];
+                qEl.style.opacity = 1;
+                qIdx = (qIdx + 1) % quotes.length;
             }, 500);
         }
-        setInterval(updateQuote, 7000); // 7 Saniye
-        updateQuote();
+        setInterval(cycleQuotes, 7000);
+        cycleQuotes();
 
-        // MÜZİK
-        const audio = document.getElementById('bgMusic');
+        const track = document.getElementById('bgMusic');
         function toggleMusic() {
-            if (audio.paused) { audio.play(); document.getElementById('musicBtn').innerText = "⏸ DURDUR"; }
-            else { audio.pause(); document.getElementById('musicBtn').innerText = "🎵 MÜZİĞİ BAŞLAT"; }
+            if (track.paused) { track.play(); document.getElementById('musicBtn').innerText = "⏸ MÜZİĞİ DURDUR"; }
+            else { track.pause(); document.getElementById('musicBtn').innerText = "🎵 ABDÜLKADİR REMİX BAŞLAT"; }
         }
 
-        // ZİKİRMATİK
         let count = parseInt(localStorage.getItem('zikirCount')) || 0;
         document.getElementById('zikir-count').innerText = count;
-        function countUp() {
-            count++;
-            document.getElementById('zikir-count').innerText = count;
-            localStorage.setItem('zikirCount', count);
-        }
+        function countUp() { count++; document.getElementById('zikir-count').innerText = count; localStorage.setItem('zikirCount', count); }
         function resetCounter() { if(confirm("Sıfırlansın mı?")) { count = 0; document.getElementById('zikir-count').innerText = count; localStorage.setItem('zikirCount', count); } }
 
-        // PAYLAŞ
-        function shareSite() {
-            if (navigator.share) { navigator.share({ title: 'Ramazan 2026', url: window.location.href }); }
-            else { alert("Link kopyalandı!"); }
-        }
+        function shareSite() { if (navigator.share) { navigator.share({ title: 'Ramazan 2026', url: window.location.href }); } else { alert("Link kopyalandı!"); } }
 
-        // GERİ SAYIM
-        const target = new Date("March 10, 2026 00:00:00").getTime();
+        // DOĞRU TARİH: 18 ŞUBAT 2026
+        const ramadanDate = new Date("February 18, 2026 00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
-            const diff = target - now;
+            const diff = ramadanDate - now;
             document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
             document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
